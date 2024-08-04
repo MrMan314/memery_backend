@@ -30,3 +30,6 @@ def old():
 	)
 	contents = urllib.request.urlopen(output).read()
 	return send_file(BytesIO(contents), mimetype="image/webp", download_name="generated.webp")
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
