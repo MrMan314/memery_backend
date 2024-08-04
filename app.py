@@ -3,11 +3,21 @@ from base64 import b64encode
 from io import BytesIO
 import replicate
 import urllib.request
-
+from generate import generate
 app = Flask(__name__, static_url_path='/static')
 
 @app.route("/")
-def hello():
+def new():
+	text = True if request.args.get("text") == "true" else False
+	brainrot = True if request.args.get("brainrot") == "true" else False
+	if request.args.get("prompt") == None:
+		return "Bad request.", 400
+	return send_file(BytesIO(generate(request.args.get("prompt"), text, brainrot)), mimetype="image/jpeg", download_name="generated.jpg")
+
+@app.route("/old")
+def old():
+	if request.args.get("prompt") == None:
+		return "Bad request.", 400
 	input = {
 		"prompt": "a meme about " + request.args.get("prompt") + " with comprehensible english text",
 		"output_quality": 100,
